@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
+import { Button, Input, Form, Container, Header, Icon, Message  } from 'semantic-ui-react'
 
 export type Props = {
   /* Callback to submit an authentication request to the server */
@@ -67,19 +68,34 @@ class Login extends React.Component {
         <Redirect to={from}/>
       )
     }
-        
+
     return (
-      <div>
-        <h1>Bank of Rapperswil</h1>
-        <form>
-          <h2>Login</h2>
-          <input onChange={this.handleLoginChanged} placeholder='Login' value={this.state.login} />
-          <input onChange={this.handlePasswordChanged} placeholder='Password' type="password" value={this.state.password} />
-          <button onClick={this.handleSubmit}>Log-in</button>
-        </form>
-        { error && <p>Es ist ein Fehler aufgetreten!</p> }
-        <Link to="/signup">Noch keinen Account?</Link>
-      </div>
+      <Container text style={{padding: 10, width: 500}}>
+          <Message
+            attached
+            header="Bank of Rapperswil"
+            content="Please login"
+            color="gray"
+            
+          />
+          <Form className='attached fluid segment'>
+            <Form.Field>
+              <Input icon="user" iconPosition='left' onChange={this.handleLoginChanged} placeholder='Login' value={this.state.login} />
+            </Form.Field>
+            <Form.Field>
+              <Input icon="lock" iconPosition='left' onChange={this.handlePasswordChanged} placeholder='Password' type="password" value={this.state.password} />
+            </Form.Field>
+            <Button onClick={this.handleSubmit}>Log-in</Button>
+          </Form>
+          {error && 
+            <Message attached="center" error>
+              Es ist ein Fehler aufgetreten!
+            </Message>
+          }
+          <Message attached='bottom' warning>
+            <Icon name="help" /> <Link to="/signup">Noch keinen Account?</Link>
+          </Message>
+          </Container>
     )
   }
 }

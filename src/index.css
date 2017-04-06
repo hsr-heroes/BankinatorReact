@@ -4,3 +4,13 @@ body {
   font-family: sans-serif;    
   background: #f7f7f7;
 }
+
+.loginMain{
+  width: 400px;
+  text-align: center;
+}
+
+.loginForm{
+  width: 350px;
+
+}

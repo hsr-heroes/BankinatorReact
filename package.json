@@ -5,7 +5,8 @@
   "devDependencies": {
     "flow-bin": "^0.43.0",
     "flow-remove-types": "^1.2.0",
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "semantic-ui": "^2.2.10"
   },
   "dependencies": {
     "react": "^15.4.2",
