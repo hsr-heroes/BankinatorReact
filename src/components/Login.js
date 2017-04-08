@@ -88,7 +88,7 @@ class Login extends React.Component {
             <Button onClick={this.handleSubmit}>Log-in</Button>
           </Form>
           {error && 
-            <Message attached="center" error>
+            <Message attached error>
               Es ist ein Fehler aufgetreten!
             </Message>
           }

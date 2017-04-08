@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { Container, Message, Button, Link, Icon } from 'semantic-ui-react'
+import { Container, Message, Button } from 'semantic-ui-react'
 
 export type Props = {
   isAuthenticated: bool,
@@ -12,7 +12,7 @@ export type Props = {
 class Home extends React.Component {
   state: {
     isAuthenticated: bool,
-      urlRedirect: string,
+    urlRedirect: string,
   }
 
   constructor(props: any) {
@@ -20,7 +20,7 @@ class Home extends React.Component {
     if (props.isAuthenticated) {
       this.state = {
         isAuthenticated: props.isAuthenticated,
-          urlRedirect: "/",
+        urlRedirect: "/",
       }
     } else {
       this.state = {
@@ -32,10 +32,10 @@ class Home extends React.Component {
   }
 
   redirectS = (url: string) => {
-      event.preventDefault()
-      this.setState(
-        {urlRedirect: url}
-      )
+    event.preventDefault()
+    this.setState(
+      { urlRedirect: url }
+    )
   }
 
 
@@ -43,17 +43,18 @@ class Home extends React.Component {
   render() {
     if (this.state.urlRedirect != "/") {
       return (
-        <Redirect to={this.state.urlRedirect}/>
+        <Redirect to={this.state.urlRedirect} />
       )
     }
     return (
       <Container text style={{ padding: 50, width: 500 }}>
         <Message
+          attached
           header="Bank of Rapperswil"
           content="best bank world wide"
           color="black"
         />
-        <Message>
+        <Message attached="bottom">
           {this.state.isAuthenticated
             ? <div>
               <p>Willkommen zurück!</p>
