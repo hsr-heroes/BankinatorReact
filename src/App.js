@@ -13,6 +13,7 @@ import Signup from './components/Signup'
 import Dashboard from './components/Dashboard'
 import AllTransactions from './components/AllTransactions'
 import PrivateRoute from './components/PrivateRoute'
+import { BrowserHistory } from 'react-router'
 
 import * as api from './api'
 
@@ -87,7 +88,7 @@ class App extends React.Component {
     })
     
     return (
-      <Router>
+      <Router history={BrowserHistory}>
         <div>
           <MenuBar/>
           <Route exact path="/" render={props => <Home {...props} isAuthenticated={isAuthenticated} />}/>
