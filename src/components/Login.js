@@ -70,12 +70,12 @@ class Login extends React.Component {
     }
 
     return (
-      <Container text style={{padding: 10, width: 500}}>
+      <Container text style={{padding: 50, width: 500}}>
           <Message
             attached
             header="Bank of Rapperswil"
             content="Please login"
-            color="gray"
+            color="black"
             
           />
           <Form className='attached fluid segment'>
