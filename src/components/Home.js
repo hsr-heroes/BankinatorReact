@@ -31,7 +31,7 @@ class Home extends React.Component {
     }
   }
 
-  redirectS = (url: string) => {
+  redirect = (url: string) => {
     event.preventDefault()
     this.setState(
       { urlRedirect: url }
@@ -58,12 +58,12 @@ class Home extends React.Component {
           {this.state.isAuthenticated
             ? <div>
               <p>Willkommen zurück!</p>
-              <Button width="300" onClick={'/dashboard'}>Zum Dashboard</Button>
+              <Button width="300" onClick={() => this.redirect('/dashboard')}>Zum Dashboard</Button>
             </div>
             : <div>
-              <Button onClick={() => this.redirectS('/login')}>Einloggen</Button>
+              <Button onClick={() => this.redirect('/login')}>Einloggen</Button>
               <p>Falls Sie noch keinen Account besitzen können Sie sich hier registrieren:</p>
-              <Button onClick={() => this.redirectS('/register')}>Registrieren</Button>
+              <Button onClick={() => this.redirect('/register')}>Registrieren</Button>
             </div>
           }
         </Message>
