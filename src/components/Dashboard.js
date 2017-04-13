@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import { Container, Segment, Form, Input, Button, Icon, Grid } from 'semantic-ui-react'
+import { Container, Segment, Form, Input, Button, Icon, Grid, Header, Label } from 'semantic-ui-react'
 
 
 /*
@@ -29,10 +29,10 @@ class Dashboard extends React.Component {
     return (
       <Container>
         <Segment style={{ marginTop: 10 }}>
-
-          <Grid columns={2} divided>
+          <Header as="h1">Kontoübersicht</Header>
+          <Grid columns={2}>
             <Grid.Row>
-              <Grid.Column>
+              <Grid.Column width="5">
                 <NewPayment />
               </Grid.Column>
               <Grid.Column>
@@ -61,10 +61,12 @@ class NewPayment extends React.Component {
   state: {
     from: string,
     to: string,
+    amount: number,
   }
   state = {
     from: "",
     to: "",
+    amount: 0,
   }
   handleSubmit() {
     console.log("just submited form")
@@ -73,17 +75,25 @@ class NewPayment extends React.Component {
     return (
       <Form className='attached fluid segment'>
         <Form.Field>
-          <Input label="Von" placeholder='10000002' value={this.state.from} />
+          <Input label={<FormLabel value="von" />}  placeholder='10000002' value={this.state.from} />
         </Form.Field>
         <Form.Field>
-          <Input label="zu" placeholder='Konto Nr' value={this.state.to} />
+          <Input label={<FormLabel value="zu" />} placeholder='Konto Nr' value={this.state.to} />
         </Form.Field>
-        <Button onClick={this.handleSubmit}>Log-in</Button>
+        <Form.Field>
+          <Input label={<FormLabel value="Betrag" />} placeholder='0 CHF' value={this.state.amount} />
+        </Form.Field>
+        <Button onClick={this.handleSubmit} fluid>Log-in</Button>
       </Form>
 
     )
   }
 
 }
+
+const FormLabel = (props) => (
+  <Label style={{width: 80}}>{props.value}</Label>
+)
+
 
 export default Dashboard
