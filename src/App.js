@@ -6,7 +6,8 @@ import {
   Route,
   Link,
   withRouter,
-  BrowserHistory
+  Redirect,
+  NavLink
 } from 'react-router-dom'
 import Home from './components/Home'
 import Login from './components/Login'
@@ -17,18 +18,16 @@ import PrivateRoute from './components/PrivateRoute'
 import { Menu, Container, Segment, Header } from 'semantic-ui-react'
 
 
+
 import * as api from './api'
 
 import type { User } from './api'
 
 class App extends React.Component {
-
   state: {
     isAuthenticated: boolean,
     token: ?string,
     user: ?User,
-    activeNavi: string,
-    urlRedirect: string,
   }
 
 
@@ -37,21 +36,17 @@ class App extends React.Component {
     super(props)
     const token = sessionStorage.getItem('token')
     const user = sessionStorage.getItem('user')
-    if (token && user) {
+    if (token && user) {  
       this.state = {
         isAuthenticated: true,
         token,
         user: JSON.parse(user),
-        activeNavi: 'Home',
-        urlRedirect: 'dashboard',
       }
     } else {
       this.state = {
         isAuthenticated: false,
         token: undefined,
         user: undefined,
-        activeNavi: 'Home',
-        urlRedirect: 'login',
       }
     }
   }
@@ -74,16 +69,9 @@ class App extends React.Component {
     callback()
   }
 
-  handleOnClickNavi = (event: Event, obj: any) => {
-    this.setState({
-      activeNavi: obj.name,
-    });
-    console.log(obj.name);
-  }
 
   render() {
-
-    const { isAuthenticated, user, token, activeNavi } = this.state
+    const { isAuthenticated, user, token } = this.state
     const MenuBar = withRouter(({ history, location: { pathname } }) => {
       if (isAuthenticated && user) {
         return (
@@ -92,9 +80,9 @@ class App extends React.Component {
               <Menu pointing secondary>
                 <Header as='h3' style={{ margin: 0, paddingTop: 7 }}>{user.firstname} {user.lastname} &ndash; {user.accountNr}</Header>
                 {/* Links inside the App are created using the react-router's Link component */}
-                <Menu.Item name='Home' active={activeNavi === 'Home'} onClick={this.handleOnClickNavi} />
-                <Menu.Item name='Kontoübersicht' to='/dashboard' active={activeNavi === 'Kontoübersicht'} onClick={this.handleOnClickNavi} />
-                <Menu.Item name='Zahlungen' to='/transactions' active={activeNavi === 'Zahlungen'} onClick={this.handleOnClickNavi} />
+                <Menu.Item name='Home' as={NavLink} to='/home' />
+                <Menu.Item name='Dashboard' as={NavLink} to='/dashboard' />
+                <Menu.Item name='Zahlungen' as={NavLink} to='/transactions' />
                 <div className='right menu' style={{ paddingTop: 10 }}>
                   <a href='/logout' onClick={(event) => {
                     event.preventDefault()
@@ -111,17 +99,17 @@ class App extends React.Component {
     })
 
     return (
-      <Router history={BrowserHistory}>
+      <Router>
         <div>
           <MenuBar />
           <Route exact path='/' render={props => <Home {...props} isAuthenticated={isAuthenticated} />} />
+          <Route exact path='/home' render={props => <Home {...props} isAuthenticated={isAuthenticated} />} />
           <Route path='/login' render={props => <Login {...props} authenticate={this.authenticate} />} />
           <Route path='/signup' component={Signup} />
           {/* 
             The following are protected routes that are only available for logged-in users. We also pass the user and token so 
             these components can do API calls. PrivateRoute is not part of react-router but our own implementation.
-          */}
-          <PrivateRoute path='/dashboard' isAuthenticated={isAuthenticated} token={token} component={Dashboard} />
+          */}            <PrivateRoute path='/dashboard' isAuthenticated={isAuthenticated} token={token} component={Dashboard} />
           <PrivateRoute path='/transactions' isAuthenticated={isAuthenticated} token={token} user={user} component={AllTransactions} />
         </div>
       </Router>
