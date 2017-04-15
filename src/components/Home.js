@@ -41,7 +41,7 @@ class Home extends React.Component {
 
 
   render() {
-    if (this.state.urlRedirect != "/") {
+    if (this.state.urlRedirect !== "/") {
       return (
         <Redirect to={this.state.urlRedirect} />
       )

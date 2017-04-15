@@ -4,9 +4,7 @@ import React from 'react'
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   withRouter,
-  Redirect,
   NavLink
 } from 'react-router-dom'
 import Home from './components/Home'
@@ -52,6 +50,7 @@ class App extends React.Component {
   }
 
   authenticate = (login: string, password: string, cb: (error: ?Error) => void) => {
+    debugger;
     api.login(login, password)
       .then(({ token, owner }) => {
         this.setState({ isAuthenticated: true, token, user: owner })

@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react'
-import { Container, Segment, Form, Input, Button, Icon, Grid, Header, Label } from 'semantic-ui-react'
-
+import { Container, Segment, Form, Input, Button, Grid, Header, Label, Dropdown } from 'semantic-ui-react'
+// import * as api from '../api'
 
 /*
   Use the api functions to call the API server. For example, the transactions
@@ -23,6 +23,11 @@ export type Props = {
 class Dashboard extends React.Component {
 
   props: Props
+
+  // constructor(props: any){
+  //   super(props);
+
+  // }
 
   render() {
 
@@ -68,14 +73,25 @@ class NewPayment extends React.Component {
     to: "",
     amount: 0,
   }
-  handleSubmit() {
-    console.log("just submited form")
+  accounts: any[];
+  accounts = [{ key: '1000001 ', text: '1000001', value: '10000001' }, { key: '10000002', text: '1000002', value: '100000002' }];
+  defaultValue = this.accounts[0].value;
+  constructor(props: any) {
+    super(props);
+
+  }
+
+
+  handleSubmit(event: Event) {
+
   }
   render() {
     return (
       <Form className='attached fluid segment'>
         <Form.Field>
-          <Input label={<FormLabel value="von" />}  placeholder='10000002' value={this.state.from} />
+          
+          <Dropdown placeholder='Konto Nr' labeled  label={<FormLabel value="zu" />} defaultValue={this.defaultValue} selection options={this.accounts} />
+          
         </Form.Field>
         <Form.Field>
           <Input label={<FormLabel value="zu" />} placeholder='Konto Nr' value={this.state.to} />
@@ -83,7 +99,7 @@ class NewPayment extends React.Component {
         <Form.Field>
           <Input label={<FormLabel value="Betrag" />} placeholder='0 CHF' value={this.state.amount} />
         </Form.Field>
-        <Button onClick={this.handleSubmit} fluid>Log-in</Button>
+        <Button onClick={this.handleSubmit} fluid>Betrag überweisen</Button>
       </Form>
 
     )
@@ -92,7 +108,7 @@ class NewPayment extends React.Component {
 }
 
 const FormLabel = (props) => (
-  <Label style={{width: 80}}>{props.value}</Label>
+  <Label style={{ width: 80 }}>{props.value}</Label>
 )
 
 

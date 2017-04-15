@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import { Button, Input, Form, Container, Header, Icon, Message  } from 'semantic-ui-react'
+import { Button, Input, Form, Container, Icon, Message  } from 'semantic-ui-react'
 
 export type Props = {
   /* Callback to submit an authentication request to the server */
@@ -51,8 +51,10 @@ class Login extends React.Component {
     event.preventDefault()
     const { login, password } = this.state
     this.props.authenticate(login, password, (error) => {
+      console.error("this should not be an error")
       if(error) {
         this.setState({error})
+        console.log(error)
       } else {
         this.setState({redirectToReferrer: true, error: null})
       }
@@ -62,7 +64,7 @@ class Login extends React.Component {
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/dashboard' } }
     const { redirectToReferrer, error } = this.state
-    
+
     if (redirectToReferrer) {
       return (
         <Redirect to={from}/>
