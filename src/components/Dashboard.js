@@ -68,21 +68,33 @@ class NewPayment extends React.Component {
     to: string,
     amount: number,
   }
+  
   state = {
-    from: "",
+    from: "1000001",
     to: "",
-    amount: 0,
+    amount: "",
   }
   accounts: any[];
-  accounts = [{ key: '1000001 ', text: '1000001', value: '10000001' }, { key: '10000002', text: '1000002', value: '100000002' }];
+  accounts = [{ key: '1 ', text: '1000001', value: '1000001' }, { key: '2', text: '1000002', value: '1000002  ' }];
   defaultValue = this.accounts[0].value;
-  constructor(props: any) {
-    super(props);
 
+  onChangeFrom = (event: Event, result: Object) => {
+      this.setState({from: result.value})
+  }
+
+  onChangeTo = (evnet: Event, result: Object) => {
+    this.setState({to: result.value})
+  }
+  onChangeAmount = (evnet: Event, result: Object) => {
+     if(!isNaN( result.value)){
+      this.setState({amount:  result.value})
+     }
   }
 
 
   handleSubmit(event: Event) {
+    event.preventDefault();
+
 
   }
   render() {
@@ -90,14 +102,14 @@ class NewPayment extends React.Component {
       <Form className='attached fluid segment'>
         <Form.Field>
           
-          <Dropdown placeholder='Konto Nr' labeled  label={<FormLabel value="zu" />} defaultValue={this.defaultValue} selection options={this.accounts} />
+          <Dropdown placeholder='Konto Nr' onChange={this.onChangeFrom} value={this.state.from}  selection options={this.accounts} />
           
         </Form.Field>
         <Form.Field>
-          <Input label={<FormLabel value="zu" />} placeholder='Konto Nr' value={this.state.to} />
+          <Input label={<FormLabel value="zu" />} onChange={this.onChangeTo} placeholder='Konto Nr' value={this.state.to} />
         </Form.Field>
         <Form.Field>
-          <Input label={<FormLabel value="Betrag" />} placeholder='0 CHF' value={this.state.amount} />
+          <Input label={<FormLabel value="Betrag" />} onChange={this.onChangeAmount} placeholder='0 CHF' value={this.state.amount} />
         </Form.Field>
         <Button onClick={this.handleSubmit} fluid>Betrag überweisen</Button>
       </Form>
