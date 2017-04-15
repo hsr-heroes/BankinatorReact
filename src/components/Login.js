@@ -50,11 +50,10 @@ class Login extends React.Component {
   handleSubmit = (event: Event) => {
     event.preventDefault()
     const { login, password } = this.state
+    
     this.props.authenticate(login, password, (error) => {
-      console.error("this should not be an error")
       if(error) {
         this.setState({error})
-        console.log(error)
       } else {
         this.setState({redirectToReferrer: true, error: null})
       }

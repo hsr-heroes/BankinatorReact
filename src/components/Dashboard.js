@@ -2,7 +2,9 @@
 
 import React from 'react'
 import { Container, Segment, Form, Input, Button, Grid, Header, Label, Dropdown } from 'semantic-ui-react'
-// import * as api from '../api'
+import * as api from '../api'
+
+import type {User, Transection, TransferResult} from '../api'
 
 /*
   Use the api functions to call the API server. For example, the transactions
@@ -37,7 +39,7 @@ class Dashboard extends React.Component {
           <Header as="h1">Kontoübersicht</Header>
           <Grid columns={2}>
             <Grid.Row>
-              <Grid.Column width="5">
+              <Grid.Column width={7}>
                 <NewPayment />
               </Grid.Column>
               <Grid.Column>
@@ -65,45 +67,63 @@ class PayHistory extends React.Component {
 class NewPayment extends React.Component {
   state: {
     from: string,
+    accounts: any,
     to: string,
     amount: number,
+    token: ?string,
   }
-  
-  state = {
-    from: "1000001",
-    to: "",
-    amount: "",
-  }
+
+
   accounts: any[];
-  accounts = [{ key: '1 ', text: '1000001', value: '1000001' }, { key: '2', text: '1000002', value: '1000002  ' }];
-  defaultValue = this.accounts[0].value;
+  defaultValue: string;
+  constructor(props: any) {
+    super(props)
+    const token = sessionStorage.getItem('token')
+    this.state = {
+      accounts: null,
+      from: "",
+      to: "",
+      amount: 0,
+      token,
+    }
+    this.setAccountDetails();
+  }
 
   onChangeFrom = (event: Event, result: Object) => {
-      this.setState({from: result.value})
+    this.setState({ from: result.value })
   }
 
   onChangeTo = (evnet: Event, result: Object) => {
-    this.setState({to: result.value})
+    this.setState({ to: result.value })
   }
   onChangeAmount = (evnet: Event, result: Object) => {
-     if(!isNaN( result.value)){
-      this.setState({amount:  result.value})
-     }
+    if (!isNaN(result.value)) {
+      this.setState({ amount: result.value })
+    }
   }
 
 
-  handleSubmit(event: Event) {
+  handleSubmit = (event: Event) => {
     event.preventDefault();
 
+  }
 
+
+  setAccountDetails = () => {
+    api.getAccountDetails(this.state.token)
+      .then(({ accountNr, amount }) => {
+        this.setState({
+          accounts: [{key: accountNr, text: accountNr + " (" + amount + " CHF)", value: accountNr}],
+          from: accountNr,
+        })
+      })
   }
   render() {
+    const sumbmitEnable = (this.state.to === "" || this.state.amount === 0)
     return (
       <Form className='attached fluid segment'>
         <Form.Field>
-          
-          <Dropdown placeholder='Konto Nr' onChange={this.onChangeFrom} value={this.state.from}  selection options={this.accounts} />
-          
+          <Dropdown placeholder='Konto Nr' onChange={this.onChangeFrom} value={this.state.from} selection options={this.state.accounts} />
         </Form.Field>
         <Form.Field>
           <Input label={<FormLabel value="zu" />} onChange={this.onChangeTo} placeholder='Konto Nr' value={this.state.to} />
@@ -111,7 +131,7 @@ class NewPayment extends React.Component {
         <Form.Field>
           <Input label={<FormLabel value="Betrag" />} onChange={this.onChangeAmount} placeholder='0 CHF' value={this.state.amount} />
         </Form.Field>
-        <Button onClick={this.handleSubmit} fluid>Betrag überweisen</Button>
+        <Button onClick={this.handleSubmit} fluid disabled={sumbmitEnable} >Betrag überweisen</Button>
       </Form>
 
     )

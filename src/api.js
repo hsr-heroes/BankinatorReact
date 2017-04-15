@@ -49,9 +49,7 @@ export function signup(
   return postJson('/auth/register', {login, firstname, lastname, password}).then(parseJSON)
 }
 
-export function getAccountDetails(
-  token: string,
-): Promise<{accountNr: string, amount: number, owner: User}> {
+export function getAccountDetails(token: ?string,): Promise<{accountNr: string, amount: number, owner: User}> {
   return getAuthenticatedJson(`/accounts`, token).then(parseJSON)
 }
 

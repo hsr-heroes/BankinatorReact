@@ -50,7 +50,6 @@ class App extends React.Component {
   }
 
   authenticate = (login: string, password: string, cb: (error: ?Error) => void) => {
-    debugger;
     api.login(login, password)
       .then(({ token, owner }) => {
         this.setState({ isAuthenticated: true, token, user: owner })
