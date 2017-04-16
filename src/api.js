@@ -72,7 +72,7 @@ export function getTransactions(
   token: string,
   fromDate: string = "", 
   toDate: string = "", 
-  count: number = 3, 
+  count: number = 10000, 
   skip: number = 0,
 ): Promise<{result: Array<Transaction>, query: { resultcount: number}}> {
   return getAuthenticatedJson(
