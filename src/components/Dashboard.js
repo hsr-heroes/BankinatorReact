@@ -21,9 +21,11 @@ class Dashboard extends React.Component {
           <Grid columns={2}>
             <Grid.Row>
               <Grid.Column width={7}>
+                <Header as="h3">Neue Zahlung</Header>
                 <NewPayment />
               </Grid.Column>
               <Grid.Column>
+                <Header as="h3">Letzte Zahlungen</Header>
                 <PayHistory />
               </Grid.Column>
             </Grid.Row>
