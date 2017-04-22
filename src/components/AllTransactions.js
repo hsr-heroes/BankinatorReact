@@ -1,8 +1,9 @@
 // @flow
 
 import React from 'react'
-
+import { Container, Segment } from 'semantic-ui-react'
 import type { User } from '../api'
+import {PayHistory} from './PayHistory'
 
 export type Props = {
   token: string,
@@ -10,12 +11,16 @@ export type Props = {
 }
 
 class AllTransactions extends React.Component {
-  
+
   props: Props
-  
-  render() {    
+
+  render() {
     return (
-      <div>All Transactions</div>
+      <Container>
+        <Segment style={{ marginTop: 10 }}>
+          <PayHistory />
+        </Segment>
+      </Container>
     )
   }
 }

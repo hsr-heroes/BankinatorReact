@@ -19,7 +19,7 @@ export class PayHistory extends React.Component {
         payments: any[]
     }
 
-    constructor(props: any) {
+    constructor(props: any, count: number = 3) {
         super(props);
         this.state = {
             token: sessionStorage.getItem('token'),
