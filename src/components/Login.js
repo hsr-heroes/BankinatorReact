@@ -72,7 +72,6 @@ class Login extends React.Component {
     }
 
     return (
-
       <Container text style={{padding: 50, width: 500}}>
           <Message
             attached

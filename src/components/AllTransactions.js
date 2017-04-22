@@ -4,6 +4,7 @@ import React from 'react'
 import { Container, Segment } from 'semantic-ui-react'
 import type { User } from '../api'
 import {PayHistory} from './PayHistory'
+import {Filter} from './Filter'
 
 export type Props = {
   token: string,
@@ -18,7 +19,8 @@ class AllTransactions extends React.Component {
     return (
       <Container>
         <Segment style={{ marginTop: 10 }}>
-          <PayHistory />
+          <Filter />
+          <PayHistory count="10" />
         </Segment>
       </Container>
     )

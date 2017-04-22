@@ -7,3 +7,5 @@ export function formatDate(date: string){
     var year = newdate.getFullYear();
     return day + "." + month + "." + year;
 }
+
+

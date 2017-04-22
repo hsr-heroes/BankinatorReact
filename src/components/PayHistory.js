@@ -2,6 +2,8 @@ import React from 'react'
 import { Table } from 'semantic-ui-react'
 import * as api from '../api'
 import {formatDate} from './Utils'
+import type {TransferResult, AccountNr} from "../api"
+
 export type KeyTransections = {
     key: number,
     from: AccountNr,
@@ -15,22 +17,30 @@ export type KeyTransections = {
 
 export class PayHistory extends React.Component {
     state: {
-        token: string,
-        payments: any[]
+        token: ?string,
+        transections: ?TransferResult[],
+        count: number,
+        from: string,
+        to: string,
     }
 
-    constructor(props: any, count: number = 3) {
+    constructor(props: any) {
         super(props);
         this.state = {
             token: sessionStorage.getItem('token'),
-            transections: undefined,
+            transections: null,
+            count: props.count,
+            from: props.from,
+            to: props.to
         }
         this.getTransections();
 
     }
 
     getTransections = () => {
-        api.getTransactions(this.state.token)
+        let {token, count, from, to } = this.state
+        if(count == null)  count = 3;
+        api.getTransactions(token, from, to, count)
             .then((val) => {
                 let i = 0;
                 let transections: Array<KeyTransections>;
@@ -48,7 +58,7 @@ export class PayHistory extends React.Component {
     render() {
 
         if (this.state.transections) {
-            const transections = this.state.transections
+            const transections: TransferResult[] = this.state.transections
             const rows = transections.map((transection) => {
                 return (
 
