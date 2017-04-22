@@ -20,7 +20,8 @@ export type Props = {
 class Login extends React.Component {
   
   props: Props
-  
+
+
   state: {
     login: string,
     password: string,
@@ -71,6 +72,7 @@ class Login extends React.Component {
     }
 
     return (
+
       <Container text style={{padding: 50, width: 500}}>
           <Message
             attached
