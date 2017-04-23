@@ -14,31 +14,35 @@ export type Props = {
 
 
 class AllTransactions extends React.Component {
-  state:{
+  state: {
     from: string,
-    to: string
+    to: string,
+    year: string,
+    month: string
   }
+  skip: number
   constructor(props: any) {
     super(props)
     this.state = {
-    from: undefined,
-    to: undefined
+      from: undefined,
+      to: undefined
     }
+    this.skip = 0
   }
   onChangeYear = (event: Event, result: Object) => {
-    this.setState({year: result.value})
-    /*todo: find a better way to reaload transections from child*/ 
+    this.setState({ year: result.value })
+    /*todo: find a better way to reaload transections from child*/
     this.payHistory.getTransections(
-      this.createISODateFrom(result.value, this.state.month), 
-      this.createISODateTo(result.value, this.state.month), 
-      10)
+      this.createISODateFrom(result.value, this.state.month),
+      this.createISODateTo(result.value, this.state.month),
+      0)
   }
   onChangeMonth = (event: Event, result: Object) => {
     this.setState({ month: result.value })
-      this.payHistory.getTransections(
-      this.createISODateFrom( this.state.year,result.value), 
-      this.createISODateTo( this.state.year,result.value), 
-      10)
+    this.payHistory.getTransections(
+      this.createISODateFrom(this.state.year, result.value),
+      this.createISODateTo(this.state.year, result.value),
+      0)
   }
   handleSubmit = (event: Event) => {
     event.preventDefault();
@@ -46,10 +50,10 @@ class AllTransactions extends React.Component {
       year: undefined,
       month: undefined,
     })
-    this.payHistory.getTransections(undefined, undefined, 10)
+    this.payHistory.getTransections(undefined, undefined, 0)
   }
 
-  createISODateFrom (year, month) {
+  createISODateFrom(year, month) {
     if (year === undefined) return undefined
     if (month === undefined) {
       return new Date(year, 0, 1).toISOString()
@@ -57,17 +61,15 @@ class AllTransactions extends React.Component {
       return new Date(year, month, 1).toISOString()
     }
   }
-  createISODateTo (year, month) {
+  createISODateTo(year, month) {
     if (year === undefined) return undefined
     if (month === undefined) {
       return new Date(year, 11, 31).toISOString()
     } else {
-       return new Date(year, month, 31).toISOString()
+      return new Date(year, month, 31).toISOString()
     }
   }
-
   render() {
-
     return (
       <Container>
         <Segment style={{ marginTop: 10 }}>
@@ -84,14 +86,10 @@ class AllTransactions extends React.Component {
               </Form.Group>
             </Form>
           </Container>
-          <PayHistory onRef={ref => (this.payHistory = ref)} count="10"  />
+          <PayHistory onRef={ref => (this.payHistory = ref)} count="10" />
         </Segment>
       </Container>
     )
   }
 }
-
-
-
-
 export default AllTransactions

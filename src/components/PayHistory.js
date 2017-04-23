@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table, Button, Container } from 'semantic-ui-react'
 import * as api from '../api'
 import { formatDate } from '../Utils'
 import type {TransferResult, AccountNr } from "../api"
@@ -11,6 +11,7 @@ export type KeyTransections = {
     amount: number,
     total: number,
     date: string,
+    resultcount: number,
 }
 
 export class PayHistory extends React.Component {
@@ -18,13 +19,14 @@ export class PayHistory extends React.Component {
         token: ?string,
         transections: ?TransferResult[],
 }
-reload = false;
+skip = 0;
 
 constructor(props: any) {
     super(props);
     this.state = {
         token: sessionStorage.getItem('token'),
         transections: null,
+        resultcount: undefined,
     }
     this.getTransections();
 
@@ -40,8 +42,13 @@ componentWillUnmount() {
     }
 }
 
-getTransections = (from: string, to: string) => {
-    api.getTransactions(this.state.token, from, to, this.props.count)
+getTransections = (from: string, to: string, skip: number) => {
+    if (from !== undefined) {
+        this.from = from
+        this.to = to
+    }
+    if (skip !== undefined) this.skip = skip
+    api.getTransactions(this.state.token, from, to, this.props.count, this.skip)
         .then((val) => {
             let i = 0;
             let transections: Array<KeyTransections>;
@@ -51,14 +58,23 @@ getTransections = (from: string, to: string) => {
                 i++;
                 transections.push(e);
             });
-            this.setState({ transections: transections })
+            this.setState({
+                transections: transections,
+                resultcount: val.query.resultcount,
+                count: val.query.count
+            })
         })
 }
-getTransectionsP = (from, to, count) => {
-    this.from = from,
-        this.to = to,
-        this.getTransections()
+pageUp = () => {
+    this.skip = this.skip + 10;
+    this.getTransections(this.from, this.to)
 }
+pageDown = () => {
+    this.skip = this.skip - 10;
+    this.getTransections(this.from, this.to)
+}
+
+
 render() {
     if (this.state.transections) {
         const transections: TransferResult[] = this.state.transections
@@ -73,24 +89,39 @@ render() {
                     <Table.Cell>{transection.total}</Table.Cell>
                 </Table.Row>
 
-            );
-        });
+            )
+        })
+        const pageCount = <PageCount resultcount={this.state.resultcount} skip={this.skip} count={this.state.count} />
+        const enableUp = (this.state.count + this.skip) > this.state.resultcount
+        const enableDown = this.skip === 0
+        const enablePageChanger = this.state.count >= 10 && this.state.resultcount > 10
+        const pageChanger = (
+            <Container textAlign='right'>
+            <Button.Group >
+                <Button icon='left chevron' disabled={enableDown} basic onClick={this.pageDown} />
+                <Button content={pageCount} disabled style={{ backgroundColor: 'white' }} />
+                <Button icon='right chevron' disabled={enableUp} onClick={this.pageUp} basic />
+            </Button.Group>
+            </Container>
+        )
         return (
-            <Table definition>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell />
-                        <Table.HeaderCell>Von</Table.HeaderCell>
-                        <Table.HeaderCell>Nach</Table.HeaderCell>
-                        <Table.HeaderCell>Betrag</Table.HeaderCell>
-                        <Table.HeaderCell>Saldo</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {rows}
-                </Table.Body>
-
-            </Table>
+            <Container>
+                <Table definition>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell />
+                            <Table.HeaderCell>Von</Table.HeaderCell>
+                            <Table.HeaderCell>Nach</Table.HeaderCell>
+                            <Table.HeaderCell>Betrag</Table.HeaderCell>
+                            <Table.HeaderCell>Saldo</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {rows}
+                    </Table.Body>
+                </Table>
+                {enablePageChanger ? pageChanger : null}
+            </Container>
         )
     } else {
         return (
@@ -98,4 +129,10 @@ render() {
         );
     }
 }
+}
+
+
+function PageCount(props) {
+    var until = (props.count + props.skip) > props.resultcount ? props.resultcount : (props.count + props.skip)
+    return <div>Transaction {props.skip} bis {until} von {props.resultcount}</div>
 }
