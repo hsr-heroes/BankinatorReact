@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import { Container, Segment, Form, Dropdown, Button } from 'semantic-ui-react'
+import { Container, Segment, Form, Dropdown, Button, Header } from 'semantic-ui-react'
 import type { User } from '../api'
 import { PayHistory } from './PayHistory'
 import { allYears, allMonth } from '../Utils.js'
@@ -72,7 +72,9 @@ class AllTransactions extends React.Component {
   render() {
     return (
       <Container>
+        
         <Segment style={{ marginTop: 10 }}>
+          <Header as="h1">Alle Transaktionen</Header>
           <Container textAlign='right' style={{ width: 465, float: 'right' }}>
             <Form>
               <Form.Group>
@@ -93,3 +95,4 @@ class AllTransactions extends React.Component {
   }
 }
 export default AllTransactions
+

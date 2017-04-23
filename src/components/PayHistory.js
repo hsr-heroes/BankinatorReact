@@ -78,15 +78,18 @@ pageDown = () => {
 render() {
     if (this.state.transections) {
         const transections: TransferResult[] = this.state.transections
+        if (transections.length === 0){
+            return (<Container><br /><br />In diesem Zeitraum wurden keine Transaktionen getätigt</Container>)
+        }
         const rows = transections.map((transection) => {
             return (
 
                 <Table.Row key={transection.key}>
-                    <Table.Cell>{formatDate(transection.date)}</Table.Cell>
+                    <Table.Cell>{formatDate(transection.date)} - {transection.amount > 0 ? "Gutschrit" : "Belastung" }</Table.Cell>
                     <Table.Cell>{transection.from}</Table.Cell>
                     <Table.Cell>{transection.target}</Table.Cell>
-                    <Table.Cell>{transection.amount}</Table.Cell>
-                    <Table.Cell>{transection.total}</Table.Cell>
+                    <Table.Cell>{transection.amount} CHF</Table.Cell>
+                    <Table.Cell>{transection.total} CHF</Table.Cell>
                 </Table.Row>
 
             )
