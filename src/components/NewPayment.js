@@ -26,7 +26,7 @@ export class NewPayment extends React.Component {
             to: "", 
             toOwner: "",
             isToValid: true,
-            amount: null,
+            amount: undefined,
             token,
             transferIsRunning: false,
             
@@ -40,7 +40,7 @@ export class NewPayment extends React.Component {
 
     onChangeTo = (evnet: Event, result: Object) => {
         this.setState({ to: result.value})
-        if(result.value.length == 7){
+        if(result.value.length === 7){
             api.getAccount(result.value, this.state.token)
             .then((Account) => {
                  this.setState({isToValid: true})
@@ -50,7 +50,6 @@ export class NewPayment extends React.Component {
         }else{
             this.setState({isToValid: false})
         }
-        console.log(this.state.isToValid)
             
     }
 
@@ -93,7 +92,7 @@ export class NewPayment extends React.Component {
 
     render() {
         const isToValid: boolean = this.state.isToValid;
-        const sumbmitEnable = (this.state.to === "" || this.state.amount === 0 || !isToValid)
+        const sumbmitDisabled = (this.state.to === '' || this.state.amount === undefined || this.state.amount === '' || this.state.amount === '0' || !isToValid)
         return (
             <Form className='attached fluid segment'>
                 <Form.Field>
@@ -108,7 +107,7 @@ export class NewPayment extends React.Component {
                 <Form.Field>
                     <Input label={<FormLabel value="Betrag" />} onChange={this.onChangeAmount} placeholder='0 CHF' value={this.state.amount} />
                 </Form.Field>
-                <Button onClick={this.handleSubmit} fluid disabled={sumbmitEnable} >Betrag überweisen</Button>
+                <Button onClick={this.handleSubmit} fluid disabled={sumbmitDisabled} >Betrag überweisen</Button>
                 
             </Form>
             

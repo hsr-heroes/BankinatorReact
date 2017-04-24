@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react'
-import { Container, Segment, Grid, Header } from 'semantic-ui-react'
+import { Redirect } from 'react-router-dom'
+import { Container, Segment, Grid, Header, Button } from 'semantic-ui-react'
 import { NewPayment } from './NewPayment'
 import { PayHistory } from './PayHistory'
 
@@ -10,10 +11,32 @@ export type Props = {
 }
 
 class Dashboard extends React.Component {
+  state: {
+    urlRedirect: string
+  }
+  constructor(props: Props){
+    super(props)
+    this.state = {
+      urlRedirect: '/'
+    }
+  }
 
-  props: Props
+
+    redirect = (url: string) => {
+    event.preventDefault()
+    this.setState(
+      { urlRedirect: url }
+    )
+  }
+
+
 
   render() {
+    if (this.state.urlRedirect !== "/") {
+      return (
+        <Redirect to={this.state.urlRedirect} />
+      )
+    }
     return (
       <Container>
         <Segment style={{ marginTop: 10 }}>
@@ -27,6 +50,10 @@ class Dashboard extends React.Component {
               <Grid.Column>
                 <Header as="h3">Letzte Zahlungen</Header>
                 <PayHistory />
+                <Container textAlign='right'>
+                  <br />
+                <Button onClick={() => this.redirect('/transactions')}>Alle Transaktionen</Button>
+                </Container>
               </Grid.Column>
             </Grid.Row>
           </Grid>
