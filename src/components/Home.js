@@ -63,7 +63,7 @@ class Home extends React.Component {
             : <div>
               <Button onClick={() => this.redirect('/login')}>Einloggen</Button>
               <p>Falls Sie noch keinen Account besitzen können Sie sich hier registrieren:</p>
-              <Button onClick={() => this.redirect('/register')}>Registrieren</Button>
+              <Button onClick={() => this.redirect('/signup')}>Registrieren</Button>
             </div>
           }
         </Message>
